@@ -1,0 +1,24 @@
+.date {
+    margin-left: none;
+    width: 20%;
+}
+
+.amount {
+    margin-left: 5px;
+    width: 12.5%;
+}
+
+.category {
+    margin-left: 10px;
+    width: 15%;
+}
+
+.notes {
+    margin-left: 5px;
+    width: 25%;
+}
+
+.Add__Button {
+    margin-left: 15px;
+    width: 15%;
+}
