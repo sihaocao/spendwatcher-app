@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Expenses from './Expenses';
 import AddExpense from './AddExpense';
+import Search from './Search';
 import './App.css';
 
 class App extends Component {
@@ -9,9 +10,12 @@ class App extends Component {
     state = {
         expenses: [
             {date: '2019-05-01', amount: 100, category: 'Food', notes: 'Weekly Grocery Trip', isEditing: false},
-            {date: '2019-07-01', amount: 700, category: 'Shelter', notes: 'Monthly Rent', isEditing: false},
-            {date: '2019-09-01', amount: 200, category: 'Transportation', notes: 'Monthly Commuter Pass', isEditing: false}
-        ]
+            {date: '2019-07-01', amount: 200, category: 'Transportation', notes: 'Monthly Commuter Pass', isEditing: false},
+            {date: '2019-09-01', amount: 700, category: 'Shelter', notes: 'Monthly Rent', isEditing: false}
+        ],
+        isOldestFirst: true,
+        isLeastAmountFirst: true,
+        categorySearchFilterText: ''
     }
 
     // (newExpense) is received from AddExpense.js
@@ -56,6 +60,43 @@ class App extends Component {
         });
     }
 
+    // Option to toggle sort by Date
+    toggleSortDate = () => {
+        const {expenses} = this.state
+        let newExpensesList = expenses
+        if (this.state.isOldestFirst) {
+            newExpensesList = expenses.sort((a, b) => new Date(b.date) - new Date(a.date))
+        } else {
+            newExpensesList = expenses.sort((a, b) => new Date(a.date) - new Date(b.date))
+        }
+        this.setState({
+            isOldestFirst: !this.state.isOldestFirst,
+            expenses: newExpensesList
+        })
+    }
+
+    // Option to toggle sort by Amount
+    toggleSortAmount = () => {
+        const {expenses} = this.state
+        let newExpensesList = expenses
+        if (this.state.isLeastAmountFirst) {
+            newExpensesList = expenses.sort((a, b) => b.amount - a.amount)
+        } else {
+            newExpensesList = expenses.sort((a, b) => a.amount - b.amount)
+        }
+        this.setState({
+            isLeastAmountFirst: !this.state.isLeastAmountFirst,
+            expenses: newExpensesList
+        })
+    }
+
+    // filter by category
+    filterUpdate = (value) => {
+        this.setState({
+            categorySearchFilterText: value
+        })
+    }
+
     render() {
         return (
             <div className='container'>
@@ -63,8 +104,24 @@ class App extends Component {
                     <div className='logo'>Logo Holder</div>
                     <h1 className='logo_header_titile'>SpendWatcher</h1>
                 </div>
-                <Expenses allExpenses={this.state.expenses} pressEditBtn={this.pressEditBtn} updateExpense={this.updateExpense} pressDelete={this.pressDelete} />
-                <AddExpense addExpense={this.addExpense} />
+                <div className='Sort__Buttons__Group'>
+                    <button onClick={this.toggleSortDate}>Sort Expenses by DATE</button>
+                    <button onClick={this.toggleSortAmount}>Sort Expenses by AMOUNT</button>
+                </div>
+                <Search 
+                    categorySearchFilterText={this.state.categorySearchFilterText} 
+                    filterUpdate={this.filterUpdate} 
+                /> 
+                <Expenses 
+                    allExpenses={this.state.expenses} 
+                    pressEditBtn={this.pressEditBtn} 
+                    updateExpense={this.updateExpense} 
+                    pressDelete={this.pressDelete} 
+                    categorySearchFilterText={this.state.categorySearchFilterText}
+                />
+                <AddExpense 
+                    addExpense={this.addExpense} 
+                />
             </div>
         );
     }

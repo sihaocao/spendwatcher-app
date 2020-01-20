@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 50px auto;
+    margin: 25px auto;
 }
 
 .logo {
@@ -23,4 +23,14 @@
 
 .logo_header_title {
     margin-left: 10px;
+}
+
+.Sort__Buttons__Group {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.Sort__Buttons__Group button {
+    margin: 10px;
+    padding: 5px;
 }
